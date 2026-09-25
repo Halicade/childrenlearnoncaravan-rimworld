@@ -24,17 +24,12 @@ namespace ChildrenLearnOnCaravan
         {
             return AccessTools.Method(typeof(Caravan_NeedsTracker), "TrySatisfyPawnNeeds");
         }
-        
-        static void Postfix(Pawn pawn)
+
+        static void Postfix(Pawn pawn, int delta) 
         {
-            if (ModsConfig.BiotechActive)
-            {
-                Need_Learning learning = pawn.needs.learning;
-                if (learning != null)
-                {
-                    pawn.needs.learning.Learn(1.2E-05f * pawn.GetStatValue(StatDefOf.LearningRateFactor) * 0.5f);
-                }
-            }
+            if (pawn.DevelopmentalStage.Child())
+                pawn.needs?.learning?.Learn(1.2E-05f * pawn.GetStatValue(StatDefOf.LearningRateFactor) * 0.5f * delta);
+
             return;
         }
     }
